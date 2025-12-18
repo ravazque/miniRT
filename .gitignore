@@ -1,8 +1,3 @@
-## VScode & Claude
-.vscode
-.claude
-CLAUDE.md
-
 ## Repos, Binaries & Screenshots
 docs/ravazque_git
 screenshots/*
@@ -73,3 +68,8 @@ linux-minilibx/modules.order
 linux-minilibx/Module.symvers
 linux-minilibx/Mkfile.old
 linux-minilibx/dkms.conf
+
+## VScode & Claude
+.vscode
+.claude
+CLAUDE.md
