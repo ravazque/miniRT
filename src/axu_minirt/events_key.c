@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/17 21:11:59 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 22:17:18 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minirt_internal.h"
+#include "../../include/minirt.h"
 
 static int	get_key_index(int kc)
 {
@@ -44,8 +44,7 @@ static void	toggle_mouse_mode(t_minirt *rt)
 	{
 		ft_printf("\033[1;33m[MOUSE MODE]\033[0;0m Enabled - Move mouse to look around\n");
 		mlx_mouse_hide(rt->mlx, rt->win);
-		mlx_mouse_move(rt->mlx, rt->win,
-			rt->img.width / 2, rt->img.height / 2);
+		mlx_mouse_move(rt->mlx, rt->win, rt->img.width / 2, rt->img.height / 2);
 	}
 	else
 	{

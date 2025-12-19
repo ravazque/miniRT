@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/17 16:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 22:20:38 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minirt_internal.h"
+#include "../../include/minirt.h"
 
 int	is_autorepeat_release(t_minirt *rt, int keycode)
 {
@@ -21,8 +21,7 @@ int	is_autorepeat_release(t_minirt *rt, int keycode)
 	if (XPending(display))
 	{
 		XPeekEvent(display, &next);
-		if (next.type == KeyPress
-			&& next.xkey.keycode == (unsigned int)keycode)
+		if (next.type == KeyPress && next.xkey.keycode == (unsigned int)keycode)
 			return (1);
 	}
 	return (0);
@@ -31,6 +30,7 @@ int	is_autorepeat_release(t_minirt *rt, int keycode)
 int	close_handler(t_minirt *rt)
 {
 	minirt_cleanup(rt);
+	printf("\033[0;96mRendering shutdown protocol detected... Finishing rendering!\033[0;0m\n");
 	exit(EXIT_SUCCESS);
 }
 

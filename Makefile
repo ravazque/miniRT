@@ -7,6 +7,8 @@ NAME        = miniRT
 SRC_DIR     = src
 INC_DIR     = include
 
+SCRSHT_DIR  = screenshots
+
 LIBFT_DIR   = src/aux_libft
 LIBFT_A     = $(LIBFT_DIR)/libft.a
 
@@ -17,9 +19,15 @@ OBJ_ROOT        = minirtObjects
 APP_OBJ_DIR     = $(OBJ_ROOT)/miniRT
 LIBFT_OBJ_DIR   = $(OBJ_ROOT)/aux_libft
 
-CC       = cc
-# CFLAGS   = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CC			= cc
+# CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+# CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+
+# CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -O3 -I$(MLX_DIR)
+# CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -O3 -I$(LIBFT_DIR) -I$(MLX_DIR)
+
+CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS_CB   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 AR       = ar
@@ -31,19 +39,22 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(APP_OBJ_DIR)/%.o)
 LIBFT_SRCS = $(shell find $(LIBFT_DIR) -type f -name '*.c')
 LIBFT_OBJS = $(LIBFT_SRCS:$(LIBFT_DIR)/%.c=$(LIBFT_OBJ_DIR)/%.o)
 
-RESET           = \001\033[0m\002
-TURQUOISE       = \001\033[0;36m\002
-LIGHT_TURQUOISE = \001\033[1;36m\002
-DARK_BLUE		= \001\033[0;34m\002
-LIGHT_GREEN     = \001\033[1;32m\002
-LIGHT_RED       = \001\033[1;91m\002
+RESET           = \033[0m
+TURQUOISE       = \033[0;36m
+LIGHT_TURQUOISE = \033[1;36m
+DARK_BLUE       = \033[0;34m
+LIGHT_GREEN     = \033[1;32m
+LIGHT_RED       = \033[1;91m
+ORANGE			= \033[38;5;208m
+ORANGE_BOLD		= \033[1;38;5;208m
 
 TOTAL_STEPS = $(words $(SRCS) $(LIBFT_SRCS))
+COMPILED = 0
 
 define show_progress
+	$(eval COMPILED := $(shell echo $$(($(COMPILED) + 1))))
 	@total=$(TOTAL_STEPS); \
-	[ "$$total" -gt 0 ] || total=1; \
-	curr=$$(find "$(OBJ_ROOT)" -type f -name "*.o" 2>/dev/null | wc -l); \
+	curr=$(COMPILED); \
 	width=60; \
 	hashes=$$(( curr * width / total )); \
 	[ "$$hashes" -ge 0 ] || hashes=0; \
@@ -62,9 +73,20 @@ endef
 
 all: $(NAME)
 
+cb:
+	@echo -e "$(ORANGE_BOLD)Compiling with COLOR BLEEDING enabled:$(RESET)"
+	@$(MAKE) fclean > /dev/null
+	@$(MAKE) ENABLE_CB=1 all
+
 $(NAME): $(MLX_A) $(LIBFT_A) $(OBJS)
+ifdef ENABLE_CB
+	@$(CC) $(CFLAGS_CB) $(OBJS) $(LIBFT_A) $(LDFLAGS) -o $@
+else
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(LDFLAGS) -o $@
-	@echo -e "$(LIGHT_TURQUOISE)miniRT ready!$(RESET)"
+endif
+	@if [ $(COMPILED) -gt 0 ]; then \
+		echo -e "$(LIGHT_TURQUOISE)miniRT ready!$(RESET)"; \
+	fi
 
 $(MLX_A):
 	@echo -e "$(DARK_BLUE)Compiling minilibx...$(RESET)"
@@ -80,14 +102,18 @@ $(LIBFT_OBJ_DIR)/%.o: $(LIBFT_DIR)/%.c | $(LIBFT_OBJ_DIR)
 
 $(APP_OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(APP_OBJ_DIR)
 	@mkdir -p $(dir $@)
+ifdef ENABLE_CB
+	@$(CC) $(CFLAGS_CB) -c $< -o $@
+else
 	@$(CC) $(CFLAGS) -c $< -o $@
+endif
 	$(call show_progress)
 
 $(OBJ_ROOT) $(APP_OBJ_DIR) $(LIBFT_OBJ_DIR):
 	@mkdir -p $@
 
 clean:
-	@echo -e "$(LIGHT_RED)Running object cleanup...$(RESET)"
+	@echo -e "$(LIGHT_RED)Running a objects cleanup...$(RESET)"
 	@rm -rf "$(OBJ_ROOT)"
 	@$(MAKE) -C $(MLX_DIR) clean > /dev/null 2>&1
 	@echo -e "$(TURQUOISE)Cleaning of objects completed!$(RESET)"
@@ -98,6 +124,24 @@ fclean:
 	@rm -f "$(NAME)" "$(LIBFT_A)"
 	@$(MAKE) -C $(MLX_DIR) clean > /dev/null 2>&1
 	@echo -e "$(TURQUOISE)Full cleaning finished!$(RESET)"
+
+clean_screenshots:
+	@if [ ! -d "./screenshots" ]; then \
+		echo -e "$(LIGHT_RED)The directory \"./screenshots/\" does not exist!$(RESET)"; \
+	else \
+		echo -e "$(LIGHT_RED)Running a screenshots cleanup...$(RESET)"; \
+		rm -rf $(SCRSHT_DIR)/*; \
+		echo -e "$(LIGHT_GREEN)Screenshots cleanup completed!$(RESET)"; \
+	fi
+
+fclean_screenshots:
+	@if [ ! -d "./screenshots" ]; then \
+		echo -e "$(LIGHT_RED)The directory \"./screenshots/\" does not exist!$(RESET)"; \
+	else \
+		echo -e "$(LIGHT_RED)Running a screenshots full cleanup...$(RESET)"; \
+		rm -rf "$(SCRSHT_DIR)"; \
+		echo -e "$(LIGHT_GREEN)Screenshots full cleanup completed!$(RESET)"; \
+	fi
 
 re:
 	@$(MAKE) fclean
@@ -116,6 +160,16 @@ test_bonus:
 	@echo -e "———"
 	@./$(NAME) test_bonus
 
-.PHONY: all clean fclean re
+.PHONY: all cb clean fclean re test_mandatory test_bonus
+
+# The makefile works fine, both for miniRT and libft, but there is a visual bug with already compiled
+# code when files are modified or deleted from libft. Despite this, the makefile works perfectly,
+# avoiding relinks, etc. It is just a visual loading error!
+# Try running make in miniRT, make fclean in libft, and make again in miniRT. You'll see the bug when loading!
+
+# Running  "make" cb causes relink because it attempts to overwrite files, thus generating relink to switch
+# between <normal mode> and color <bleeding mode>.
+
+# Remove the "-O3" flag during correction, as it fixes possible errors but greatly improves performance!
 
 # If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!
