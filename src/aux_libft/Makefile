@@ -1,4 +1,3 @@
-
 MAKEFLAGS += --no-print-directory
 
 NAME = libft.a
@@ -10,7 +9,7 @@ ARFLAGS = rcs
 
 SRC_DIR = src
 INC_DIR = include
-OBJ_DIR = ../../minirtObjects/aux_libft
+OBJ_DIR = ../../miniRT_objects/aux_libft
 
 RESET = \033[0m
 GREEN = \033[1;32m
@@ -77,9 +76,9 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@echo -e "$(COMPILE)Compilando libft.a$(RESET)"
+	@printf "$(COMPILE)Compilando libft.a$(RESET)\n"
 	@$(AR) $(ARFLAGS) $@ $^
-	@echo -e "$(GREEN)libft.a ready!$(RESET)"
+	@printf "$(GREEN)libft.a ready!$(RESET)\n"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -88,8 +87,8 @@ $(OBJ_DIR):
 	@mkdir -p $@
 
 clean:
-	@if [ ! -d "../../minirtObjects/miniRT" ]; then \
-		rm -rf "../../minirtObjects"; \
+	@if [ ! -d "../../miniRT_objects/miniRT" ]; then \
+		rm -rf "../../miniRT_objects"; \
 	else \
 		rm -rf $(OBJ_DIR); \
 	fi
@@ -100,5 +99,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-
-# If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!
