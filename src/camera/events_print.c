@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/23 03:21:28 by ravazque         ###   ########.fr       */
+/*   Updated: 2026/01/22 18:07:29 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ static const char	*get_type_name(enum e_objects type)
 		return ("Sphere");
 	if (type == Pl)
 		return ("Plane");
+	if (type == Plc)
+		return ("CheckBoard");
 	if (type == Cy)
 		return ("Cylinder");
 	if (type == Co)
 		return ("Cone");
-	return ("Unknown");
+	return ("Other");
 }
 
 void	print_grab_msg(t_object *obj, t_vec3 pos)
