@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2026/01/22 18:07:29 by ravazque         ###   ########.fr       */
+/*   Updated: 2026/02/09 23:53:20 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ static const char	*get_type_name(enum e_objects type)
 {
 	if (type == Sp)
 		return ("Sphere");
+	if (type == Spt)
+		return ("Textured Sphere");
 	if (type == Pl)
 		return ("Plane");
 	if (type == Plc)
-		return ("CheckBoard");
+		return ("Checkerboard");
 	if (type == Cy)
 		return ("Cylinder");
 	if (type == Co)

@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:49:11 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/24 01:18:05 by ravazque         ###   ########.fr       */
+/*   Updated: 2026/02/09 23:57:53 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ t_sphere	*sphere_constructor(t_list **comp, t_object *obj, bool texture)
 			result->bump_map = texture_load_ppm(aux->next->content);
 		else
 			result->bump_map = NULL;
-		obj->identificator = Sp;
 	}
 	sphere_set_object(obj, result, texture);
 	return (result);
