@@ -361,7 +361,7 @@ Custom implementation of standard C library functions including string manipulat
 
 </details>
 
-## Key Learning Outcomes
+## 💡 Key Learning Outcomes
 
 The miniRT project teaches fundamental 3D graphics and raytracing concepts:
 
@@ -373,7 +373,7 @@ The miniRT project teaches fundamental 3D graphics and raytracing concepts:
 - **Scene Management**: Parsing and storing complex 3D scene data
 - **Real-time Graphics**: Balancing quality and performance for interactive rendering
 
-## Technical Specifications
+## ⚙️ Technical Specifications
 
 - **Language**: C (C90 standard)
 - **Compiler**: cc with `-Wall -Wextra -Werror`
@@ -384,7 +384,7 @@ The miniRT project teaches fundamental 3D graphics and raytracing concepts:
 - **Color Depth**: 24-bit RGB
 - **Target FPS**: 24 (configurable 24-60)
 
-## Requirements
+## 🔧 Requirements
 
 - Linux with X11
 - GCC compiler
